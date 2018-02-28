@@ -1,6 +1,8 @@
 import hashlib
 import json 
+from flask import Flask
 from time import time 
+from hashlib import sha256
 
 class Blockchain(object):
     # THis is the class object used to contain the empty list which is the chain 
@@ -67,14 +69,27 @@ class Blockchain(object):
     @staticmethod
     def hash(block):
         # Hashes a Block 
-        pass
-    
-    
+        
+        """ 
+        creates a 256 hash of a block
+        :param block <dict> block
+        return string hash
+        
+        """
+        # We must make sure that the Dict is ordered or we will have in consistent hashes
+        block_string = json.dumps(block,sort_keys=True).encode()
+        return hashlib.sha256(block_string).hexdigest()
+
+
+    @property 
     def last_block(self):
         #Returns the last block in the chain 
-        pass
+        return self.chain[-1]
     
 
     # a block will contian a few key factors 
     # a timestamp , index, proof, previous hash 
     # and  transactions list
+
+
+
