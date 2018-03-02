@@ -7,6 +7,10 @@ from hashlib import sha256
 class Blockchain(object):
     # THis is the class object used to contain the empty list which is the chain 
     # of transactions
+    
+    app = Flask(__name__)
+    node_identifier = str(uuid4()).replace('-', '')
+    blockchain = Blockchain()
     def init(self):
         self.chain = []
         self.current_transactions = []
@@ -93,3 +97,23 @@ class Blockchain(object):
 
 
 
+@app.route("/mine", method=["GET"])
+def mine():
+
+    return "we'll return a new block"
+    # TODO: write code...
+    
+@app.route("/transaction/new", method=["POST"])
+def new_transaction():
+    """docstring for mine"""
+    # TODO: write code...
+    
+@app.route("/chain", method=["GET"])
+def fullchain():
+    response = {
+        'chain': blockchain.chain,
+        'length': len(blockchain.chain),
+        
+        
+    }
+    # TODO: write code...
