@@ -1,16 +1,18 @@
 import hashlib
 import json 
 from flask import Flask
+from flask import jsonify
 from time import time 
+from textwrap import dedent
 from hashlib import sha256
+from uuid import uuid4
+
 
 class Blockchain(object):
     # THis is the class object used to contain the empty list which is the chain 
     # of transactions
     
-    app = Flask(__name__)
-    node_identifier = str(uuid4()).replace('-', '')
-    blockchain = Blockchain()
+
     def init(self):
         self.chain = []
         self.current_transactions = []
@@ -94,26 +96,54 @@ class Blockchain(object):
     # a block will contian a few key factors 
     # a timestamp , index, proof, previous hash 
     # and  transactions list
+app = Flask(__name__)
+node_identifier = str(uuid4()).replace('-', '')
+blockchain = Blockchain()
 
 
-
-@app.route("/mine", method=["GET"])
+@app.route("/mine", methods=["GET"])
 def mine():
 
     return "we'll return a new block"
-    # TODO: write code...
+
+@app.route("/transaction/new", methods=["POST"])
+def new_transaction(self,sender,recipient,amount):
+    """Append new transactions to the current transactions
     
-@app.route("/transaction/new", method=["POST"])
-def new_transaction():
-    """docstring for mine"""
-    # TODO: write code...
+        param :sender : is the sender of the transaction
+        param :recipient : is the recipient of the current transaction
+        param :amount is the amount of the current transaction
     
-@app.route("/chain", method=["GET"])
-def fullchain():
+    
+    """
+
+
+    
+    self.current_transactions.append(
+        {
+            'sender': sender,
+            'recipient': recipient,
+            'amount': amount,
+        }
+        
+        )
+    
+@app.route("/chain", methods=["GET"])
+def fullchain(self):
+    """ Returns the entire blockchain 
+    
+    
+       :return jsnoified response
+    """
     response = {
         'chain': blockchain.chain,
         'length': len(blockchain.chain),
         
         
     }
-    # TODO: write code...
+    return jsonify(response)
+
+
+    
+if __name__ == "__main__" : 
+    app.run(host='0.0.0.0', port=5000)
